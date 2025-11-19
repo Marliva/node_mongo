@@ -4,6 +4,7 @@ const socket = io();
 
 //Déclaration des éléments HTML
 const sendGlobalMessage = document.getElementById('sendGlobalMessage');
+const userList = document.getElementById('userList');
 //récupération des paramètres get de mon URL
 let params = new URLSearchParams(document.location.search);
 let name = params.get("name");
@@ -35,4 +36,16 @@ sendGlobalMessage.addEventListener('click', () => {
     let monMessage = tinymce.get('message').getContent();
     //...et je l'envoie au serveur
     socket.emit('newMessage', {monMessage:monMessage});
+})
+
+//récupération et affichage de la liste des utilisateurs
+let users;
+socket.on("userList", (res)=>{
+    console.log(res);
+    users = res.users;
+    userList.innerHTML = "";
+    users.array.forEach(element => {
+        userList.append(`<li>${element.name}</li>`)
+    })
+    
 })
