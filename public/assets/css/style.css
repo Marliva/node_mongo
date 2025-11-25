@@ -1,31 +1,59 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
+body {
     background-color: #272052;
     color: white;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-h1{
+h1 {
     font-size: 5rem;
     font-weight: 500;
 }
 
-form{
+form {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-input{
+button {
+    margin-top: 2rem;
     font-size: 1rem;
     padding: 0.5rem;
     border-radius: 0.5rem;
     border: none;
     outline: none;
 }
+
+ul {
+    width: 6rem;
+    margin-top: 5rem;
+    border: 1px solid white;
+    background-color: black;
+    border-radius: 2rem;
+    list-style: none;
+    padding: 1rem;
+    line-height: 2rem;
+}
+
+#messages {
+    width: 20rem;
+    margin-top: 5rem;
+    border: 1px solid white;
+    background-color: black;
+    border-radius: 2rem;
+    list-style: none;
+    padding: 1rem;
+    line-height: 2rem;
+}
+

@@ -5,6 +5,7 @@ const socket = io();
 //Déclaration des éléments HTML
 const sendGlobalMessage = document.getElementById('sendGlobalMessage');
 const userList = document.getElementById('userList');
+const messages = document.getElementById('messages');
 
 //récupération des paramètres get de mon URL
 let params = new URLSearchParams(document.location.search);
@@ -12,15 +13,29 @@ let name = params.get("name");
 
 //Functions
 const updateUser = (res) => {
-    users = res.users;
+    let users = res.users;
     userList.innerHTML = "";
     users.forEach(element => {
-        if(element.id !== socket.id){
-            console.log("element",element.id,"socket",socket.id);
+        if (element.id !== socket.id) {
+            console.log("element", element.id, "socket", socket.id);
             const li = document.createElement("li");
             li.innerText = element.name;
             userList.append(li)
-        }
+        };
+    });
+};
+
+const updateMessage = (res) => {
+    let messageServer = res.messages;
+    messages.innerHTML = "";
+    messageServer.forEach((element) => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+            <p>${element.name}</p>
+            <p>${element.content}</p>
+            <p>${moment(element.date).fromNow()}</p>
+        `
+        messages.append(div);
     })
 }
 
@@ -49,19 +64,29 @@ sendGlobalMessage.addEventListener('click', () => {
     let monMessage = tinymce.get('message').getContent();
     //...et je l'envoie au serveur
     socket.emit('newMessage', { monMessage: monMessage });
+
 })
 
 //récupération et affichage de la liste des utilisateurs
-let users;
 socket.on("users", (res) => {
     console.log(res);
     updateUser(res);
-
 })
 
 //Un nouvel utilisateur se connecte sur Ceppouic
 socket.on("newUser", (res) => {
     console.log("Nouvelle connexion : ", res);
     updateUser(res);
-
 })
+
+//Un utilisateur se déconnecte de Ceppouic
+socket.on("userLeft", (res) => {
+    console.log("déconnexion : ", res);
+    updateUser(res);
+})
+
+//récupération et affichage des messages
+socket.on("messages",updateMessage); //C'est la même formulation que pour les socket.on juste au-dessus
+
+//Un nouvel utilisateur envoie un message
+socket.on("newMessageFromServer", updateMessage);
