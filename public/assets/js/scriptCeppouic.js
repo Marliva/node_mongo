@@ -5,9 +5,25 @@ const socket = io();
 //Déclaration des éléments HTML
 const sendGlobalMessage = document.getElementById('sendGlobalMessage');
 const userList = document.getElementById('userList');
+
 //récupération des paramètres get de mon URL
 let params = new URLSearchParams(document.location.search);
 let name = params.get("name");
+
+//Functions
+const updateUser = (res) => {
+    users = res.users;
+    userList.innerHTML = "";
+    users.forEach(element => {
+        if(element.id !== socket.id){
+            console.log("element",element.id,"socket",socket.id);
+            const li = document.createElement("li");
+            li.innerText = element.name;
+            userList.append(li)
+        }
+    })
+}
+
 //envoi du nom d'utilisateur au serveur à la première connexion
 socket.emit("hello", { name: name });
 //utilisation de TinyMCE pour la saisie des messages
@@ -24,10 +40,7 @@ tinymce.init({
     toolbar: 'undo redo | accordion accordionremove | ' +
         'importword exportword exportpdf | math | ' +
         'blocks fontfamily fontsize | bold italic underline strikethrough | ' +
-        'align numlist bullist | link image | table media | ' +
-        'lineheight outdent indent | forecolor backcolor removeformat | ' +
-        'charmap emoticons | code fullscreen preview | save print | ' +
-        'pagebreak anchor codesample | ltr rtl',
+        'lineheight outdent indent | forecolor backcolor removeformat | ',
     menubar: ''
 });
 
@@ -35,17 +48,20 @@ tinymce.init({
 sendGlobalMessage.addEventListener('click', () => {
     let monMessage = tinymce.get('message').getContent();
     //...et je l'envoie au serveur
-    socket.emit('newMessage', {monMessage:monMessage});
+    socket.emit('newMessage', { monMessage: monMessage });
 })
 
 //récupération et affichage de la liste des utilisateurs
 let users;
-socket.on("userList", (res)=>{
+socket.on("users", (res) => {
     console.log(res);
-    users = res.users;
-    userList.innerHTML = "";
-    users.forEach(element => {
-        userList.append(`<li>${element.name}</li>`)
-    })
-    
+    updateUser(res);
+
+})
+
+//Un nouvel utilisateur se connecte sur Ceppouic
+socket.on("newUser", (res) => {
+    console.log("Nouvelle connexion : ", res);
+    updateUser(res);
+
 })
