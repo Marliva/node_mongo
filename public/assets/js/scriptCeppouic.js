@@ -28,7 +28,7 @@ tinymce.init({
         'lineheight outdent indent | forecolor backcolor removeformat | ' +
         'charmap emoticons | code fullscreen preview | save print | ' +
         'pagebreak anchor codesample | ltr rtl',
-    menubar: 'file edit view insert format tools table help'
+    menubar: ''
 });
 
 //au clic sur le bouton "Envoyer", je récupère le contenu tinyMCE...
@@ -44,7 +44,7 @@ socket.on("userList", (res)=>{
     console.log(res);
     users = res.users;
     userList.innerHTML = "";
-    users.array.forEach(element => {
+    users.forEach(element => {
         userList.append(`<li>${element.name}</li>`)
     })
     
