@@ -57,3 +57,67 @@ ul {
     line-height: 2rem;
 }
 
+#privateMessage {
+    display: none;
+    position: fixed;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+}
+
+#modal-content {
+    background: white;
+    width: 400px;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#closePrivateModal {
+    cursor: pointer;
+    font-size: 22px;
+    color: black;
+}
+
+#sendPrivateMessage {
+    margin-top: 15px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+
+#privateMessagesContainer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    max-width: 300px;
+    z-index: 1;
+}
+
+.private-msg {
+    background: #151370;
+    border-left: 4px solid #6563cc;
+    padding: 5rem;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.pm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pm-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.pm-close:hover {
+    color: red;
+}

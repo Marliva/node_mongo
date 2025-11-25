@@ -22,10 +22,10 @@ const initSocket = (io, name) => {
         })
         socket.on("newMessage", (res) => {
             let message = {
-                id : socket.id,
-                name : socket.name,
-                content : res.monMessage,
-                date : new Date(),
+                id: socket.id,
+                name: socket.name,
+                content: res.monMessage,
+                date: new Date(),
                 //creation d'un token
             };
             messages.push(message);
@@ -38,6 +38,14 @@ const initSocket = (io, name) => {
             // envoie aux clients encore connectés, le tableau users mis à jour
             socket.broadcast.emit("userLeft", { "users": users });
         })
+        socket.on("privateMessage", (res) => {
+            io.to(res.to).emit("privateMessageFromServer", {
+                from: socket.name,
+                content: res.content,
+                date: new Date()
+            });
+        });
+
     })
 }
 
